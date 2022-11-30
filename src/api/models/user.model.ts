@@ -1,16 +1,42 @@
-import { WithId } from 'mongodb';
-import * as z from 'zod';
+
+import mongoose from 'mongoose';
 import {db} from '../../db';
 //validator
-export const User=z.object({
-    username:z.string({required_error:"Username is required."}).min(3),
-    password:z.string({required_error:"Password is required."}).min(3),
-    name:z.string().nullable(),
-    surname:z.string().nullable(),
-    email:z.string().email(),
-    role:z.string()
-});
 
-export type User=z.infer<typeof User>;
-export type UserWithId=WithId<User>;
-export const Users=db.collection<User>('user');
+export interface UserDocument extends mongoose.Document{
+    username:String,
+    password:String,
+    name:String,
+    surname:String,
+    email:String,
+    role:String
+
+}
+const userSchema = new mongoose.Schema({
+    username:{
+        type:String,
+        required:true,
+        unique:true
+    },
+    password:{
+        type:String,
+        required:true,
+    },
+    name:{
+        type:String,
+
+    },
+    surname:{
+        type:String,
+    },
+    email:{
+        type:String,
+        required:true,
+        unique:true
+    },
+    role:{
+        type:String
+    }
+})
+
+export const User=mongoose.model("User",userSchema);

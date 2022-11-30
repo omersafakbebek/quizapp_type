@@ -1,13 +1,14 @@
 import {Router,Response,Request, NextFunction} from 'express';
 import { AnyZodObject, ZodError } from 'zod';
 const router=Router();
-import {User,UserWithId,Users} from '../models/user.model';
+import {User} from '../models/user.model';
+import { UserValidator } from '../../interfaces/user.interface';
 import * as UserHandlers from '../handlers/user.handlers';  
 import {validateRequest} from '../../middlewares' 
 import { ParamsWithId } from '../../interfaces/ParamsWithId';
 router.get('/',UserHandlers.findAll);
 router.post('/',validateRequest({
-    body:User,
+    body:UserValidator,
 }),
 UserHandlers.createOne);
 router.get('/:id',
@@ -20,7 +21,7 @@ router.get('/:id',
 router.put('/:id',
     validateRequest({
         params:ParamsWithId,
-        body:User
+        body:UserValidator
     }),
     UserHandlers.updateOne
 );

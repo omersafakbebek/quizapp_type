@@ -1,10 +1,10 @@
 import { response } from 'express';
 import request from 'supertest';
 import app from '../../app';
-import { User, Users } from '../models/user.model';
+import { User } from '../models/user.model';
 beforeAll(async () => {
   try {
-    await Users.drop();
+    await User.deleteMany({});
 
   } catch (error) {
 
